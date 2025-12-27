@@ -29,7 +29,6 @@
     "@tiptap/starter-kit": "^3.14.0",
     "@tiptap/vue-3": "^3.14.0",
     "lucide-vue-next": "^0.562.0",
-    "pdfjs-dist": "^5.4.449",
     "vue3-sfc-loader": "^0.9.5",
     "vuedraggable": "^4.1.0"
   },

@@ -9,6 +9,11 @@ final_build
 out
 dist_out
 dist_build
+dist_new
+dist_v2
+dist_v3
+dist_fixed*
+dist_lite*
 .DS_Store
 .eslintcache
 *.log*

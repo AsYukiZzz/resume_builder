@@ -177,6 +177,118 @@ app.whenReady().then(() => {
     }
   })
 
+  // 新增：PNG 生成 Handler (主进程截图)
+  ipcMain.handle('generate-png-data', async (_event, { tempHtmlPath, styleContent, width, height }) => {
+    // 限制最大高度，防止内存溢出或窗口创建失败 (Windows 限制通常在 32k 左右，安全起见设为 8000)
+    const safeHeight = Math.min(height + 50, 8000) 
+    const safeWidth = Math.max(width + 20, 800)
+
+    const captureWindow = new BrowserWindow({
+      show: false,
+      width: safeWidth,
+      height: safeHeight,
+      useContentSize: true, // 确保 width/height 是视口大小
+      webPreferences: {
+        webSecurity: false,
+        offscreen: true // 启用离屏渲染，性能更好且不会闪烁
+      }
+    })
+
+    let styles = styleContent || ''
+    // 样式加载逻辑复用 (简略版，因为通常 styleContent 已经足够)
+    if (!styles) {
+        // ... (省略备用样式加载逻辑，假设前端传递的 styleContent 足够)
+    }
+
+    const htmlWithStyle = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="UTF-8">
+          <style>
+            /* 关键修改：允许 body 自由撑开，去除 overflow: hidden 和 height 限制 */
+            body { margin: 0; padding: 20px; background: white; width: fit-content; }
+            #resume-preview { width: 100%; }
+            ${styles}
+          </style>
+        </head>
+        <body>
+          <div id="resume-preview">${await readFile(tempHtmlPath, 'utf-8')}</div>
+        </body>
+      </html>
+    `
+
+    const pngPromise = new Promise<Buffer>((resolve, reject) => {
+        let isResolved = false
+        const timeout = setTimeout(() => {
+            if (!isResolved) {
+                isResolved = true
+                reject(new Error('PNG generation timed out'))
+            }
+        }, 15000)
+
+        captureWindow.webContents.on('did-finish-load', async () => {
+            if (isResolved) return
+            clearTimeout(timeout)
+            
+            try {
+                // 关键修复：动态计算实际内容高度并调整窗口大小，确保截取完整内容
+                // 获取 body 的实际渲染高度和宽度
+                const bodyHeight = await captureWindow.webContents.executeJavaScript(`
+                    Math.max(
+                        document.body.scrollHeight, 
+                        document.documentElement.scrollHeight,
+                        document.querySelector('#resume-preview').scrollHeight
+                    )
+                `)
+                const bodyWidth = await captureWindow.webContents.executeJavaScript(`document.body.scrollWidth`)
+                
+                // 增加一些 padding 缓冲，防止边缘被切
+                const finalHeight = Math.ceil(bodyHeight) + 40
+                const finalWidth = Math.max(Math.ceil(bodyWidth), safeWidth)
+                
+                // 动态调整窗口大小以包裹所有内容
+                // 注意：在离屏模式下，这会调整渲染 Surface 的大小
+                captureWindow.setSize(finalWidth, finalHeight)
+                
+                // 等待重排和渲染 (给一点时间让 GPU 缓冲区更新)
+                await new Promise(r => setTimeout(r, 500))
+                
+                // 截图
+                const image = await captureWindow.webContents.capturePage()
+                const pngBuffer = image.toPNG()
+                
+                isResolved = true
+                resolve(pngBuffer)
+            } catch (err) {
+                if (!isResolved) {
+                    isResolved = true
+                    reject(err)
+                }
+            }
+        })
+
+        captureWindow.webContents.on('did-fail-load', (_event, _errorCode, errorDescription) => {
+             if (!isResolved) {
+                isResolved = true
+                reject(new Error(`Failed to load PNG page: ${errorDescription}`))
+             }
+        })
+    })
+
+    captureWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(htmlWithStyle)}`)
+
+    try {
+        const buffer = await pngPromise
+        captureWindow.close()
+        return buffer
+    } catch (err) {
+        captureWindow.close()
+        console.error('PNG Generation Error:', err)
+        throw err
+    }
+  })
+
   // 3. 通用文件保存
   ipcMain.handle('save-file', async (_event, { content, type, defaultName }) => {
     const { canceled, filePath } = await dialog.showSaveDialog({
@@ -191,16 +303,13 @@ app.whenReady().then(() => {
 
     if (canceled || !filePath) return false
 
-    if (type === 'png') {
-      // Base64 to Buffer
-      const base64Data = content.replace(/^data:image\/\w+;base64,/, '')
-      await writeFile(filePath, Buffer.from(base64Data, 'base64'))
-    } else if (type === 'pdf') {
-      // Buffer
-      await writeFile(filePath, content)
+    if (type === 'png' && typeof content === 'string') {
+       // 兼容旧逻辑 (Base64 String)
+       const base64Data = content.replace(/^data:image\/\w+;base64,/, '')
+       await writeFile(filePath, Buffer.from(base64Data, 'base64'))
     } else {
-      // JSON String
-      await writeFile(filePath, content, 'utf-8')
+       // Buffer (PDF 或 新版 PNG) 或 String (JSON)
+       await writeFile(filePath, content)
     }
     return true
   })
