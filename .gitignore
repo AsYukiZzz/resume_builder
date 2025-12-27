@@ -1,0 +1,16 @@
+node_modules
+dist
+release
+dist_final
+dist_setup
+build_output
+release_build
+final_build
+out
+dist_out
+dist_build
+.DS_Store
+.eslintcache
+*.log*
+builder_cache
+.idea

@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 修复预览区被挤压的问题 */
+#resume-preview {
+  flex-shrink: 0; /* 关键：禁止 A4 纸被挤压 */
+}
+
+/* =========================================
+   核心修复：打印/导出 PDF 专用样式
+   ========================================= */
+@media print {
+  /* 1. 隐藏页面上除 #resume-preview 以外的所有元素 */
+  body * {
+    visibility: hidden;
+  }
+
+  /* 2. 单独显示简历区域及其子元素 */
+  #resume-preview,
+  #resume-preview * {
+    visibility: visible;
+  }
+
+  /* 3. 将简历区域定位到页面左上角，并强制重置尺寸 */
+  #resume-preview {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0 !important;
+    padding: 0 !important; /* 根据你的设计，可能需要保留内边距，或者在内部 div 控制 */
+
+    /* 强制重置 A4 尺寸，抵消屏幕预览时的 transform: scale() */
+    width: 210mm !important;
+    min-height: 297mm !important;
+    transform: none !important; /* 关键：去除屏幕上的缩放效果 */
+
+    /* 确保背景色和阴影打印正确 */
+    box-shadow: none !important;
+    background-color: white !important;
+
+    /* 保证打印时字号准确 */
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* 4. 隐藏滚动条 */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}

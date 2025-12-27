@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>简历工坊</title>
+  <!--
+    修改重点：
+    在 content 中增加了 font-src 'self' data:;
+    这允许加载 v-md-editor 的图标字体文件
+  -->
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:;"
+  />
+</head>
+
+<body>
+<div id="app"></div>
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>
