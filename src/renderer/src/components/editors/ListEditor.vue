@@ -19,12 +19,22 @@
           <label class="form-label">{{ field.label }}</label>
 
           <!-- 文本输入 -->
-          <input
-            v-if="field.type === 'text'"
-            v-model="item[field.key]"
-            class="form-input"
-            :placeholder="field.placeholder"
-          />
+          <div v-if="field.type === 'text'" class="form-input-group group">
+            <input
+              v-model="item[field.key]"
+              class="form-input pr-8"
+              :placeholder="field.placeholder"
+            />
+            <XCircle
+              v-if="item[field.key]" 
+              :size="18"
+              class="clear-btn" 
+              fill="currentColor"
+              fill-opacity="0.2"
+              stroke-width="2"
+              @click="item[field.key] = ''"
+            />
+          </div>
 
           <!-- 下拉框 -->
           <div v-if="field.type === 'select'" class="relative group/select">
@@ -59,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { Trash2, ChevronDown, Plus } from 'lucide-vue-next'
+import { Trash2, ChevronDown, Plus, XCircle } from 'lucide-vue-next'
 import RichTextEditor from '../RichTextEditor.vue'
 
 // --- Props 定义 ---

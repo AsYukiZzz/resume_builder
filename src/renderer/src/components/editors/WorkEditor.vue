@@ -5,31 +5,40 @@
       :key="idx"
       class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all relative group dark:bg-slate-900 dark:border-slate-800 dark:hover:border-indigo-500/50"
     >
-      <!-- 序号 & 删除 -->
       <div class="index-badge">{{ idx + 1 }}</div>
-      <button @click="removeItem(idx)" class="delete-btn">
-        <Trash2 :size="16" />
-      </button>
+      <button @click="removeItem(idx)" class="delete-btn"><Trash2 :size="16" /></button>
 
-      <div class="grid grid-cols-12 gap-x-4 gap-y-5 mb-6">
-        <!-- 第一行：公司名称 (8列) + 城市 (4列) -->
-        <div class="col-span-8">
+      <div class="grid grid-cols-12 gap-x-4 gap-y-5 mb-5">
+        <!-- 第一行：公司 (6) + 部门 (6) -->
+        <div class="col-span-6">
           <label class="form-label">公司名称</label>
-          <input v-model="item.company" class="form-input" placeholder="请输入公司名称" />
+          <div class="form-input-group group/input">
+            <input v-model="item.company" class="form-input pr-8" placeholder="公司名称" />
+            <XCircle v-if="item.company" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="item.company = ''" />
+          </div>
         </div>
-        <div class="col-span-4">
-          <label class="form-label">工作城市</label>
-          <input v-model="item.city" class="form-input" placeholder="所在城市" />
+        <div class="col-span-6">
+          <label class="form-label">所属部门</label>
+          <div class="form-input-group group/input">
+            <input v-model="item.department" class="form-input pr-8" placeholder="部门名称" />
+            <XCircle v-if="item.department" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="item.department = ''" />
+          </div>
         </div>
 
-        <!-- 第二行：部门 (6列) + 岗位 (6列) -->
+        <!-- 第二行：职位 (6) + 城市 (6) -->
         <div class="col-span-6">
-          <label class="form-label">部门名称</label>
-          <input v-model="item.department" class="form-input" placeholder="所属部门" />
+          <label class="form-label">担任职位</label>
+          <div class="form-input-group group/input">
+            <input v-model="item.role" class="form-input pr-8" placeholder="职位名称" />
+            <XCircle v-if="item.role" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="item.role = ''" />
+          </div>
         </div>
         <div class="col-span-6">
-          <label class="form-label">岗位名称</label>
-          <input v-model="item.role" class="form-input" placeholder="担任职位" />
+          <label class="form-label">所在城市</label>
+          <div class="form-input-group group/input">
+            <input v-model="item.city" class="form-input pr-8" placeholder="城市" />
+            <XCircle v-if="item.city" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="item.city = ''" />
+          </div>
         </div>
 
         <!-- 第三行：在岗时间 (独占一行，防止挤压) -->
@@ -69,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { Trash2, Plus } from 'lucide-vue-next'
+import { Trash2, Plus, XCircle } from 'lucide-vue-next'
 import RichTextEditor from '../RichTextEditor.vue'
 
 const props = defineProps<{ list: any[] }>()

@@ -118,6 +118,7 @@
             :animation="300"
             ghost-class="opacity-50"
             drag-class="cursor-grabbing"
+            filter=".undraggable"
             class="flex flex-col gap-1.5"
             @start="onDragStart"
             @end="onDragEnd"
@@ -130,11 +131,23 @@
                   currentTab === mod.id
                     ? 'bg-indigo-50 text-indigo-700 font-bold shadow-sm ring-1 ring-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:ring-indigo-800'
                     : 'text-slate-600 dark:text-slate-300',
-                  isCollapsed ? 'justify-center px-0 mx-1' : 'px-3'
+                  isCollapsed ? 'justify-center px-0 mx-1' : 'px-3',
+                  mod.id === 'profile' ? 'undraggable' : ''
                 ]"
               >
                 <!-- 拖拽手柄：仅在展开时显示 -->
+                <!-- 基本信息(profile)模块不支持拖动 -->
                 <div
+                  v-if="mod.id === 'profile'"
+                  v-show="!isCollapsed"
+                  class="mr-2 flex items-center justify-center text-slate-300 cursor-not-allowed p-1 rounded transition-colors dark:text-slate-600"
+                  title="基本信息固定在顶部，不可拖动"
+                  @click.stop
+                >
+                  <Lock :size="14" />
+                </div>
+                <div
+                  v-else
                   v-show="!isCollapsed"
                   class="drag-handle mr-2 cursor-grab active:cursor-grabbing flex items-center justify-center text-slate-300 hover:text-slate-500 p-1 rounded hover:bg-slate-200/50 transition-colors dark:text-slate-500 dark:hover:text-slate-300 dark:hover:bg-slate-800"
                   @click.stop
@@ -145,7 +158,7 @@
                 <!-- 模块图标：在折叠时作为拖拽手柄 -->
                 <div 
                   class="shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105"
-                  :class="{ 'drag-handle cursor-grab active:cursor-grabbing': isCollapsed }"
+                  :class="mod.id !== 'profile' ? { 'drag-handle cursor-grab active:cursor-grabbing': isCollapsed } : 'cursor-pointer'"
                 >
                   <component 
                     :is="mod.icon" 
@@ -469,7 +482,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, provide } from 'vue'
 import draggable from 'vuedraggable'
 import ToastContainer from './components/ui/ToastContainer.vue'
 import {
@@ -494,7 +507,8 @@ import {
   ZoomInIcon as ZoomIn,
   MoonIcon as Moon,
   SunIcon as Sun,
-  RotateCcwIcon as RotateCcw
+  RotateCcwIcon as RotateCcw,
+  LockIcon as Lock
 } from 'lucide-vue-next'
 
 // --- Composables ---
@@ -578,6 +592,9 @@ const {
   fontSizeOptions,     // 字号选项
   lineHeightOptions    // 行高选项
 } = useTemplate()
+
+// 向子组件提供当前模板名称
+provide('currentTemplateName', currentTemplateName)
 
 // 4. 缩放与视图层
 const {

@@ -26,7 +26,10 @@
               {{ data[mod.id].city }}
             </span>
             <span v-if="data[mod.id].github" class="flex items-center gap-1 whitespace-nowrap">
-              GitHub: {{ data[mod.id].github }}
+              GitHub: <a :href="data[mod.id].github" target="_blank" class="text-blue-600 hover:text-blue-800 underline">{{ data[mod.id].github }}</a>
+            </span>
+            <span v-if="data[mod.id].website" class="flex items-center gap-1 whitespace-nowrap">
+              个人网站: <a :href="data[mod.id].website" target="_blank" class="text-blue-600 hover:text-blue-800 underline">{{ data[mod.id].website }}</a>
             </span>
             
             <!-- 更多信息循环渲染 -->

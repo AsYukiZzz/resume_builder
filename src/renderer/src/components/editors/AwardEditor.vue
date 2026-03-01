@@ -11,13 +11,16 @@
         <Trash2 :size="16" />
       </button>
 
-      <div class="grid grid-cols-12 gap-x-5 gap-y-6 mb-6">
-        <!-- 第一行：奖项名称 + 获奖时间 -->
-        <div class="col-span-8">
+      <div class="grid grid-cols-12 gap-x-4 gap-y-5 mb-5">
+        <!-- 行1：奖项名称 (6) + 时间 (6) -->
+        <div class="col-span-6">
           <label class="form-label">奖项名称</label>
-          <input v-model="item.name" class="form-input" placeholder="如：国家励志奖学金" />
+          <div class="form-input-group group/input">
+            <input v-model="item.name" class="form-input pr-8" placeholder="奖项/证书名称" />
+            <XCircle v-if="item.name" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="item.name = ''" />
+          </div>
         </div>
-        <div class="col-span-4">
+        <div class="col-span-6">
           <label class="form-label">获奖时间</label>
           <input type="month" v-model="item.date" class="form-input" />
         </div>
@@ -39,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { Trash2, Plus } from 'lucide-vue-next'
+import { Trash2, Plus, XCircle } from 'lucide-vue-next'
 import RichTextEditor from '../RichTextEditor.vue'
 
 const props = defineProps<{ list: any[] }>()

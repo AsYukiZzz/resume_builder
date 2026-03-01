@@ -16,7 +16,8 @@
         <span v-if="data.profile.phone">{{ data.profile.phone }}</span>
         <span v-if="data.profile.email">{{ data.profile.email }}</span>
         <span v-if="data.profile.city">{{ data.profile.city }}</span>
-        <span v-if="data.profile.github">{{ data.profile.github }}</span>
+        <span v-if="data.profile.github"><a :href="data.profile.github" target="_blank" class="text-slate-500 hover:text-slate-800 underline decoration-slate-300">{{ data.profile.github }}</a></span>
+        <span v-if="data.profile.website"><a :href="data.profile.website" target="_blank" class="text-slate-500 hover:text-slate-800 underline decoration-slate-300">{{ data.profile.website }}</a></span>
 
         <!-- 更多信息循环渲染 -->
         <template v-for="field in extraFields" :key="field.key">

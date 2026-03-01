@@ -37,19 +37,12 @@
             <MailIcon :size="12" class="text-sky-600" /><span>{{ data.profile.email }}</span>
           </div>
           <div v-if="data.profile.wechat" class="flex items-center gap-1.5">
-            <MessageSquareIcon :size="12" class="text-sky-600" /><span>{{
+            <svg class="w-3 h-3 text-sky-600" viewBox="0 0 24 24" fill="currentColor"><path d="M8.7 14c.3 0 .6.1.8.2.2.1.4.2.6.4l-.1.1c-.2-.2-.5-.3-.7-.4-.3-.1-.5-.1-.8-.1-.4 0-.8.1-1.1.2-.4.1-.7.4-1 .6-.2.3-.4.6-.5.9-.1.4-.2.8-.2 1.2 0 .4.1.9.2 1.3.1.4.3.7.6 1 .2.3.6.5.9.6.4.1.8.2 1.2.2.5 0 .9-.1 1.4-.3.4-.2.8-.5 1.1-.9.1-.1.2-.1.3-.1.1 0 .2 0 .3.1l.1.1c.1.1.1.2.1.3 0 .1-.1.2-.2.3-.4.5-.9.9-1.4 1.1-.6.3-1.2.4-1.8.4-.6 0-1.1-.1-1.6-.3-.5-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.3-.2-.5-.3-1-.3-1.6 0-.6.1-1.1.3-1.6.2-.5.6-1 1-1.3.4-.4.9-.7 1.4-.9.5-.2 1.1-.3 1.7-.3zm7.3 1.1c.3 0 .6.1.9.2.3.1.6.3.8.5l-.1.1c-.2-.2-.5-.4-.8-.5-.3-.1-.6-.2-.9-.2-.4 0-.8.1-1.1.2-.4.1-.7.4-1 .6-.2.3-.4.6-.5.9-.1.4-.2.8-.2 1.2 0 .4.1.9.2 1.3.1.4.3.7.6 1 .2.3.6.5.9.6.4.1.8.2 1.2.2.5 0 .9-.1 1.4-.3.4-.2.8-.5 1.1-.9.1-.1.2-.1.3-.1.1 0 .2 0 .3.1l.1.1c.1.1.1.2.1.3 0 .1-.1.2-.2.3-.4.5-.9.9-1.4 1.1-.6.3-1.2.4-1.8.4-.6 0-1.1-.1-1.6-.3-.5-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.3-.2-.5-.3-1-.3-1.6 0-.6.1-1.1.3-1.6.2-.5.6-1 1-1.3.4-.4.9-.7 1.4-.9.5-.2 1.1-.3 1.7-.3zM18.4 2c3 0 5.4 1.9 5.4 4.3 0 2.4-2.4 4.3-5.4 4.3-.6 0-1.2-.1-1.8-.2l-2.1 1.2c-.3.2-.5.2-.6 0-.1-.1-.1-.3 0-.5l.5-1.7c-1.5-1-2.4-2.4-2.4-3.8C12 3.9 14.8 2 18.4 2zM6.5 7C9.9 7 12.6 9 12.6 11.5c0 2.5-2.7 4.5-6.1 4.5-.7 0-1.4-.1-2-.3l-2.4 1.4c-.3.2-.6.2-.7 0-.1-.1-.1-.4 0-.5l.6-1.9C.8 13.6 0 12.1 0 10.5 0 8 2.9 7 6.5 7z"/></svg><span>{{
               data.profile.wechat
             }}</span>
           </div>
           <div v-if="data.profile.city" class="flex items-center gap-1.5">
             <MapPinIcon :size="12" class="text-sky-600" /><span>{{ data.profile.city }}</span>
-          </div>
-          <div v-if="data.profile.website" class="flex items-center gap-1.5">
-            <GlobeIcon :size="12" class="text-sky-600" /><a
-              :href="data.profile.website"
-              class="underline decoration-sky-200"
-              >{{ data.profile.website }}</a
-            >
           </div>
         </div>
         <div class="flex flex-wrap gap-2 text-xs text-gray-500">
@@ -71,7 +64,12 @@
           <span
             v-if="data.profile.github"
             class="bg-gray-50 border border-gray-100 px-1.5 py-0.5 rounded flex items-center gap-1"
-            >Github: {{ data.profile.github }}</span
+            >Github: <a :href="data.profile.github" target="_blank" class="hover:text-sky-600 hover:underline transition-colors text-sky-600 underline decoration-sky-200">{{ data.profile.github }}</a></span
+          >
+          <span
+            v-if="data.profile.website"
+            class="bg-gray-50 border border-gray-100 px-1.5 py-0.5 rounded flex items-center gap-1"
+            >个人网站: <a :href="data.profile.website" target="_blank" class="hover:text-sky-600 hover:underline transition-colors text-sky-600 underline decoration-sky-200">{{ data.profile.website }}</a></span
           >
           
           <!-- 更多信息循环渲染 -->

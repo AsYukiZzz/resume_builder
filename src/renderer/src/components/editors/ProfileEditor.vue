@@ -5,19 +5,28 @@
     <!-- 第一行：姓名 + 电话 (2列) -->
     <div class="grid grid-cols-2 gap-5">
       <div>
-        <label class="form-label">姓名</label
-        ><input v-model="modelValue.name" class="form-input" placeholder="请输入姓名" />
+        <label class="form-label">姓名</label>
+        <div class="form-input-group group/input">
+          <input v-model="modelValue.name" class="form-input pr-8" placeholder="请输入姓名" />
+          <XCircle v-if="modelValue.name" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="modelValue.name = ''" />
+        </div>
       </div>
       <div>
-        <label class="form-label">电话</label
-        ><input v-model="modelValue.phone" class="form-input" placeholder="手机号" />
+        <label class="form-label">电话</label>
+        <div class="form-input-group group/input">
+          <input v-model="modelValue.phone" class="form-input pr-8" placeholder="手机号" />
+          <XCircle v-if="modelValue.phone" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="modelValue.phone = ''" />
+        </div>
       </div>
     </div>
 
     <!-- 第二行：邮箱 (独占一行，防止不够宽) -->
     <div>
-      <label class="form-label">邮箱</label
-      ><input v-model="modelValue.email" class="form-input" placeholder="邮箱地址" />
+      <label class="form-label">邮箱</label>
+      <div class="form-input-group group/input">
+        <input v-model="modelValue.email" class="form-input pr-8" placeholder="邮箱地址" />
+        <XCircle v-if="modelValue.email" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="modelValue.email = ''" />
+      </div>
     </div>
 
     <!-- 第三行：头像 + 微信号 -->
@@ -60,15 +69,11 @@
         </div>
       </div>
       <div class="flex-1 pt-6">
-        <label class="form-label flex justify-between"
-          ><span>微信号</span
-          ><X
-            v-if="modelValue.wechat"
-            @click="modelValue.wechat = ''"
-            :size="12"
-            class="cursor-pointer text-gray-300 hover:text-red-500 dark:text-slate-600"
-        /></label>
-        <input v-model="modelValue.wechat" class="form-input" placeholder="请输入微信号 (选填)" />
+        <label class="form-label">微信号</label>
+        <div class="form-input-group group/input">
+          <input v-model="modelValue.wechat" class="form-input pr-8" placeholder="请输入微信号 (选填)" />
+          <XCircle v-if="modelValue.wechat" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="modelValue.wechat = ''" />
+        </div>
       </div>
     </div>
 
@@ -95,16 +100,25 @@
           </div>
         </div>
         <div>
-          <label class="form-label">期望薪资</label
-          ><input v-model="modelValue.salary" class="form-input" placeholder="如: 15k-20k" />
+          <label class="form-label">期望薪资</label>
+          <div class="form-input-group group/input">
+            <input v-model="modelValue.salary" class="form-input pr-8" placeholder="如: 15k-20k" />
+            <XCircle v-if="modelValue.salary" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="modelValue.salary = ''" />
+          </div>
         </div>
         <div>
-          <label class="form-label">职位名称</label
-          ><input v-model="modelValue.title" class="form-input" placeholder="如: Java开发" />
+          <label class="form-label">职位名称</label>
+          <div class="form-input-group group/input">
+            <input v-model="modelValue.title" class="form-input pr-8" placeholder="如: Java开发" />
+            <XCircle v-if="modelValue.title" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="modelValue.title = ''" />
+          </div>
         </div>
         <div>
-          <label class="form-label">期望工作地</label
-          ><input v-model="modelValue.city" class="form-input" placeholder="如: 北京" />
+          <label class="form-label">期望工作地</label>
+          <div class="form-input-group group/input">
+            <input v-model="modelValue.city" class="form-input pr-8" placeholder="如: 北京" />
+            <XCircle v-if="modelValue.city" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="modelValue.city = ''" />
+          </div>
         </div>
       </div>
     </div>
@@ -131,10 +145,6 @@
             />
           </div>
         </div>
-        <div>
-          <label class="form-label">个人网站</label
-          ><input v-model="modelValue.website" class="form-input" placeholder="https://" />
-        </div>
       </div>
     </div>
 
@@ -143,11 +153,18 @@
       <h3 class="section-title">更多信息</h3>
       <div class="grid grid-cols-3 gap-4 mb-4" v-if="activeExtras.length > 0">
         <div v-for="key in activeExtras" :key="key" class="relative group animate-fade-in">
-          <label class="form-label">{{ getExtraLabel(key) }}</label
-          ><input v-model="modelValue[key]" class="form-input" /><XCircle
+          <label class="form-label">{{ getExtraLabel(key) }}</label>
+          <div class="form-input-group group/input">
+            <input v-model="modelValue[key]" class="form-input pr-8" />
+            <XCircle v-if="modelValue[key]" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="modelValue[key] = ''" />
+          </div>
+          <!-- 移除原来的删除按钮，因为有了清除按钮。如果要删除字段，可以考虑放在 label 旁边或者作为清除按钮的替代 -->
+          <!-- 实际上，这里我们可以让 XCircle 变为移除字段的按钮，放在右上角 -->
+          <XCircle
             :size="14"
-            class="absolute right-2 top-8 text-gray-300 cursor-pointer hover:text-red-500 opacity-0 group-hover:opacity-100 transition"
+            class="absolute -top-1 -right-1 text-gray-300 hover:text-red-500 cursor-pointer opacity-0 group-hover:opacity-100 transition bg-white rounded-full z-10"
             @click="removeExtraField(key)"
+            title="移除此字段"
           />
         </div>
       </div>
@@ -166,24 +183,40 @@
     <!-- 个人简介 -->
     <div>
       <h3 class="section-title !mb-2">个人简介</h3>
+      <!-- 如果当前模板不支持个人简介，显示提示 -->
+      <div v-if="!supportsSummary" class="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded-lg mb-3 flex items-start gap-3 text-sm dark:bg-yellow-900/20 dark:border-yellow-800 dark:text-yellow-400">
+        <AlertTriangle :size="16" class="mt-0.5 shrink-0" />
+        <div>
+          <p class="font-bold">当前模板未显示个人简介</p>
+          <p class="mt-1 opacity-90">虽然您可以编辑此内容，但在当前选中的模板中不会展示。如需展示，请切换到其他支持简介的模板。</p>
+        </div>
+      </div>
       <RichTextEditor v-model="modelValue.summary" placeholder="简要介绍你的核心优势..." />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { Plus, X, XCircle, ChevronDown } from 'lucide-vue-next'
+import { ref, computed, watch, inject } from 'vue'
+import { Plus, XCircle, ChevronDown, AlertTriangle } from 'lucide-vue-next'
 import RichTextEditor from '../RichTextEditor.vue'
 
 // --- Props & State ---
 const props = defineProps<{ modelValue: any }>() // 双向绑定的数据对象
 const fileInput = ref<HTMLInputElement | null>(null) // 文件上传 input 引用
 
+// 注入当前模板名称，用于判断是否支持简介
+const currentTemplateName = inject('currentTemplateName', ref('Professional'))
+
+// 判断当前模板是否支持个人简介
+const supportsSummary = computed(() => {
+  // Professional 模板默认不显示简介 (根据 TemplateProfessional.vue 代码逻辑)
+  return currentTemplateName.value !== 'Professional'
+})
+
 // --- 动态字段配置 ---
 // 定义所有可选的额外字段及其对应 key
 const extraFieldsConfig = [
-  { label: 'GitHub', key: 'github' },
   { label: '年龄', key: 'age' },
   { label: '工作年限', key: 'experience' },
   { label: '性别', key: 'gender' },
@@ -191,7 +224,9 @@ const extraFieldsConfig = [
   { label: '体重', key: 'weight' },
   { label: '籍贯', key: 'hometown' },
   { label: '政治面貌', key: 'politics' },
-  { label: '婚姻状况', key: 'marriage' }
+  { label: '婚姻状况', key: 'marriage' },
+  { label: 'GitHub', key: 'github' },
+  { label: '个人网站', key: 'website' }
 ]
 
 // 当前已激活显示的额外字段 key 列表

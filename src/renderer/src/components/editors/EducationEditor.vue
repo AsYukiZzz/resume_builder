@@ -10,26 +10,38 @@
         <Trash2 :size="16" />
       </button>
 
-      <div class="grid grid-cols-12 gap-x-4 gap-y-5 mb-6">
+      <div class="grid grid-cols-12 gap-x-4 gap-y-5 mb-5">
         <!-- 第一行：学校 (8) + 城市 (4) -->
         <div class="col-span-8">
           <label class="form-label">学校名称</label>
-          <input v-model="item.school" class="form-input" placeholder="学校名称" />
+          <div class="form-input-group group/input">
+            <input v-model="item.school" class="form-input pr-8" placeholder="学校名称" />
+            <XCircle v-if="item.school" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="item.school = ''" />
+          </div>
         </div>
         <div class="col-span-4">
           <label class="form-label">所在城市</label>
-          <input v-model="item.city" class="form-input" placeholder="省/市" />
+          <div class="form-input-group group/input">
+            <input v-model="item.city" class="form-input pr-8" placeholder="省/市" />
+            <XCircle v-if="item.city" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="item.city = ''" />
+          </div>
         </div>
 
         <!-- 第二行：专业 (6) + 学历 (6) -->
         <div class="col-span-6">
           <label class="form-label">专业</label>
-          <input v-model="item.major" class="form-input" placeholder="所学专业" />
+          <div class="form-input-group group/input">
+            <input v-model="item.major" class="form-input pr-8" placeholder="所学专业" />
+            <XCircle v-if="item.major" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="item.major = ''" />
+          </div>
         </div>
         <div class="col-span-6">
           <label class="form-label">学历</label>
           <div class="relative group/select">
-            <select v-model="item.degree" class="form-input appearance-none cursor-pointer pr-8">
+            <select
+              v-model="item.degree"
+              class="form-input appearance-none cursor-pointer pr-8"
+            >
               <option value="">请选择</option>
               <option>博士</option>
               <option>硕士</option>
@@ -46,11 +58,17 @@
         <!-- 第三行：学院 (6) + 类型 (6) -->
         <div class="col-span-6">
           <label class="form-label">学院</label>
-          <input v-model="item.college" class="form-input" placeholder="所属学院" />
+          <div class="form-input-group group/input">
+            <input v-model="item.college" class="form-input pr-8" placeholder="所属学院" />
+            <XCircle v-if="item.college" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="item.college = ''" />
+          </div>
         </div>
         <div class="col-span-6">
           <label class="form-label">学历类型</label>
-          <input v-model="item.degreeType" class="form-input" placeholder="全日制" />
+          <div class="form-input-group group/input">
+            <input v-model="item.degreeType" class="form-input pr-8" placeholder="全日制" />
+            <XCircle v-if="item.degreeType" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="item.degreeType = ''" />
+          </div>
         </div>
 
         <!-- 第四行：时间 (12) -->
@@ -88,7 +106,7 @@
 </template>
 
 <script setup lang="ts">
-import { Trash2, ChevronDown, Plus } from 'lucide-vue-next'
+import { Trash2, ChevronDown, Plus, XCircle } from 'lucide-vue-next'
 import RichTextEditor from '../RichTextEditor.vue'
 
 const props = defineProps<{ list: any[] }>()

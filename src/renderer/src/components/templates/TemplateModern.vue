@@ -27,7 +27,11 @@
           </div>
           <div v-if="data.profile.github" class="flex items-center gap-2 break-all">
             <span class="opacity-70">G:</span>
-            <span>{{ data.profile.github }}</span>
+            <span><a :href="data.profile.github" target="_blank" class="text-blue-300 hover:text-white underline decoration-blue-300/50">{{ data.profile.github }}</a></span>
+          </div>
+          <div v-if="data.profile.website" class="flex items-center gap-2 break-all">
+            <span class="opacity-70">W:</span>
+            <span><a :href="data.profile.website" target="_blank" class="text-blue-300 hover:text-white underline decoration-blue-300/50">{{ data.profile.website }}</a></span>
           </div>
 
           <!-- 更多信息循环渲染 -->

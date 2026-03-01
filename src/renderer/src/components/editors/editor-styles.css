@@ -1,5 +1,7 @@
 .form-label { @apply block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-2 ml-1 dark:text-slate-300; }
 .form-input { @apply w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-700 font-medium focus:bg-white focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all duration-200 placeholder:text-slate-400 placeholder:font-normal dark:bg-slate-800/50 dark:border-slate-700 dark:text-slate-200 dark:focus:bg-slate-800 dark:placeholder:text-slate-500; }
+.form-input-group { @apply relative; }
+.clear-btn { @apply absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-500 opacity-60 hover:opacity-100 transition-all duration-200 cursor-pointer p-1 rounded-full hover:bg-red-50 hover:scale-110 active:scale-95 dark:text-slate-500 dark:hover:text-red-400 dark:hover:bg-red-900/30; }
 .section-title { @apply text-sm font-bold text-slate-800 mb-4 pb-2 border-b border-gray-100 dark:text-slate-100 dark:border-slate-700; }
 .index-badge { @apply absolute -left-3 -top-3 w-7 h-7 bg-white border border-gray-200 rounded-full flex items-center justify-center text-[10px] font-bold text-gray-400 shadow-sm z-10 cursor-default dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400; }
 .delete-btn { @apply absolute top-4 right-4 text-gray-300 hover:text-red-500 hover:bg-red-50 p-1.5 rounded-md transition opacity-0 group-hover:opacity-100 dark:text-slate-600 dark:hover:bg-red-900/30; }

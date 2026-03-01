@@ -11,25 +11,37 @@
         <Trash2 :size="16" />
       </button>
 
-      <div class="grid grid-cols-12 gap-x-4 gap-y-5 mb-6">
-        <!-- 行1：经历名称 (8列) + 城市 (4列) -->
-        <div class="col-span-8">
+      <div class="grid grid-cols-12 gap-x-4 gap-y-5 mb-5">
+        <!-- 行1：经历名称 (6) + 角色 (6) -->
+        <div class="col-span-6">
           <label class="form-label">经历名称</label>
-          <input v-model="item.name" class="form-input" placeholder="请输入经历名称" />
+          <div class="form-input-group group/input">
+            <input v-model="item.name" class="form-input pr-8" placeholder="经历名称" />
+            <XCircle v-if="item.name" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="item.name = ''" />
+          </div>
         </div>
-        <div class="col-span-4">
-          <label class="form-label">所在城市</label>
-          <input v-model="item.city" class="form-input" placeholder="所在城市" />
+        <div class="col-span-6">
+          <label class="form-label">担任角色</label>
+          <div class="form-input-group group/input">
+            <input v-model="item.role" class="form-input pr-8" placeholder="角色" />
+            <XCircle v-if="item.role" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="item.role = ''" />
+          </div>
         </div>
 
-        <!-- 行2：角色 (6列) + 部门 (6列) -->
+        <!-- 行2：所属组织 (6) + 城市 (6) -->
         <div class="col-span-6">
-          <label class="form-label">所属角色</label>
-          <input v-model="item.role" class="form-input" placeholder="担任角色" />
+          <label class="form-label">所属组织</label>
+          <div class="form-input-group group/input">
+            <input v-model="item.department" class="form-input pr-8" placeholder="组织名称" />
+            <XCircle v-if="item.department" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="item.department = ''" />
+          </div>
         </div>
         <div class="col-span-6">
-          <label class="form-label">所属部门</label>
-          <input v-model="item.department" class="form-input" placeholder="所属部门" />
+          <label class="form-label">所在城市</label>
+          <div class="form-input-group group/input">
+            <input v-model="item.city" class="form-input pr-8" placeholder="城市" />
+            <XCircle v-if="item.city" :size="18" class="clear-btn" fill="currentColor" fill-opacity="0.2" stroke-width="2" @click="item.city = ''" />
+          </div>
         </div>
 
         <!-- 行3：经历时间 (12列 - 独占一行) -->
@@ -69,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { Trash2, Plus } from 'lucide-vue-next'
+import { Trash2, Plus, XCircle } from 'lucide-vue-next'
 import RichTextEditor from '../RichTextEditor.vue'
 
 const props = defineProps<{ list: any[] }>()
