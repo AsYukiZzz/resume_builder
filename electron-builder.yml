@@ -2,17 +2,14 @@ appId: com.electron.app
 productName: resume_builder
 directories:
   buildResources: build
-  output: dist_fixed_v4
+  output: dist
+compression: maximum
 files:
   - '!**/.vscode/*'
   - '!**/.idea/*'
   - '!dist/**'
   - '!dist_*/**'
   - '!*_build/**'
-  - '!build_output/**'
-  - '!release/**'
-  - '!builder_cache/**'
-
   - '!build_output/**'
   - '!release/**'
   - '!builder_cache/**'
