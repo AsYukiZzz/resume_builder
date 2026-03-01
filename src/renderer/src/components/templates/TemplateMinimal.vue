@@ -34,39 +34,65 @@
       ></div>
     </div>
 
-    <!-- 模块循环 -->
+    <!-- 遍历渲染所有模块，严格按照 schema 顺序 -->
     <template v-for="mod in schema" :key="mod.id">
-      <div v-if="moduleStates[mod.id] && mod.id !== 'profile'" class="mb-10 group">
-        <!-- 标题：带短下划线 -->
-        <div class="flex items-center gap-4 mb-6">
-          <h3
-            class="font-medium tracking-[0.2em] uppercase text-slate-900 shrink-0"
-            :style="{ fontSize: Number(styleConfig.fontSize) + 2 + 'px' }"
-          >
-            {{ mod.name }}
-          </h3>
-          <div class="h-px bg-slate-200 flex-1 group-hover:bg-slate-300 transition-colors"></div>
+      <!-- 技能模块特殊处理 -->
+      <div
+        v-if="moduleStates[mod.id] && mod.id === 'skill'"
+        class="mb-6"
+      >
+        <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+          <span class="w-1 h-1 bg-gray-400 rounded-full"></span>
+          {{ mod.name }}
         </div>
+        <div class="flex flex-wrap gap-2">
+          <div
+            v-for="(item, idx) in data[mod.id]"
+            :key="idx"
+            class="bg-gray-50 border border-gray-100 px-2 py-1 rounded text-sm text-gray-700"
+            :style="{ fontSize: styleConfig.fontSize + 'px' }"
+          >
+            <span class="font-medium">{{ item.name }}</span>
+            <span v-if="item.level" class="text-gray-400 ml-1 text-xs">{{ item.level }}</span>
+          </div>
+        </div>
+      </div>
 
-        <!-- 列表内容 -->
+      <!-- 其他通用列表模块 -->
+      <div
+        v-else-if="moduleStates[mod.id] && mod.id !== 'profile'"
+        class="mb-8"
+      >
+        <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-gray-100 pb-2">
+          <span class="w-1 h-1 bg-gray-400 rounded-full"></span>
+          {{ mod.name }}
+        </div>
+        
         <div class="space-y-6">
-          <div v-for="(item, idx) in data[mod.id]" :key="idx" class="relative pl-2 border-l-2 border-transparent hover:border-slate-200 transition-colors">
-            <div class="flex justify-between items-baseline mb-2">
-              <div class="font-medium text-slate-800 text-lg">
+          <div v-for="(item, idx) in data[mod.id]"
+ :key="idx" class="relative pl-4 border-l border-gray-100">
+            <div class="absolute -left-[3px] top-2 w-1.5 h-1.5 bg-gray-200 rounded-full"></div>
+            
+            <div class="flex justify-between items-baseline mb-1">
+              <span
+                class="font-bold text-gray-900"
+                :style="{ fontSize: Number(styleConfig.fontSize) + 1 + 'px' }"
+              >
                 {{ item.school || item.company || item.name }}
-              </div>
-              <div class="text-sm text-slate-400 font-mono shrink-0">{{ item.date }}</div>
+              </span>
+              <span class="text-xs text-gray-400 font-mono">{{ item.date }}</span>
             </div>
             
-            <div v-if="item.major || item.role" class="flex items-center gap-2 mb-2 text-slate-600 font-medium italic">
-              <span>{{ item.major || item.role }}</span>
-              <span v-if="item.degree" class="w-1 h-1 bg-slate-300 rounded-full"></span>
+            <div class="text-gray-600 mb-2 font-medium text-sm flex items-center gap-2">
+              <span>{{ item.role || item.major }}</span>
+              <span v-if="item.degree" class="w-1 h-1 bg-gray-300 rounded-full"></span>
               <span v-if="item.degree">{{ item.degree }}</span>
             </div>
 
+            <!-- 直接渲染 HTML -->
             <div
               v-if="item.desc"
-              class="text-slate-500 prose-content leading-relaxed"
+              class="text-gray-600 leading-relaxed prose-content"
               :style="{ fontSize: styleConfig.fontSize + 'px', lineHeight: styleConfig.lineHeight }"
               v-html="item.desc"
             ></div>

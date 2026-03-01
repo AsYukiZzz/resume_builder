@@ -115,35 +115,57 @@
             v-model="activeSchema"
             item-key="id"
             handle=".drag-handle"
-            animation="200"
-            ghost-class="bg-indigo-50/80 dark:bg-indigo-900/50"
+            :animation="300"
+            ghost-class="opacity-50"
+            drag-class="cursor-grabbing"
+            class="flex flex-col gap-1.5"
+            @start="onDragStart"
+            @end="onDragEnd"
           >
             <template #item="{ element: mod }">
               <div
                 @click="handleModuleClick(mod.id)"
-                class="flex items-center py-3 mb-1.5 rounded-xl cursor-pointer transition-all duration-200 group relative overflow-hidden"
+                class="flex items-center py-3 rounded-xl cursor-pointer group relative overflow-hidden select-none hover:bg-slate-50 dark:hover:bg-slate-800"
                 :class="[
                   currentTab === mod.id
                     ? 'bg-indigo-50 text-indigo-700 font-bold shadow-sm ring-1 ring-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:ring-indigo-800'
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100',
+                    : 'text-slate-600 dark:text-slate-300',
                   isCollapsed ? 'justify-center px-0 mx-1' : 'px-3'
                 ]"
               >
-                <GripVertical
+                <!-- 拖拽手柄：仅在展开时显示 -->
+                <div
                   v-show="!isCollapsed"
-                  :size="14"
-                  class="drag-handle mr-2 text-slate-300 hover:text-slate-500 cursor-move dark:text-slate-500 dark:hover:text-slate-300"
-                />
-                <component :is="mod.icon" :size="isCollapsed ? 20 : 18" class="shrink-0 transition-transform duration-200 group-hover:scale-105" />
+                  class="drag-handle mr-2 cursor-grab active:cursor-grabbing flex items-center justify-center text-slate-300 hover:text-slate-500 p-1 rounded hover:bg-slate-200/50 transition-colors dark:text-slate-500 dark:hover:text-slate-300 dark:hover:bg-slate-800"
+                  @click.stop
+                >
+                  <GripVertical :size="14" />
+                </div>
+                
+                <!-- 模块图标：在折叠时作为拖拽手柄 -->
+                <div 
+                  class="shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105"
+                  :class="{ 'drag-handle cursor-grab active:cursor-grabbing': isCollapsed }"
+                >
+                  <component 
+                    :is="mod.icon" 
+                    :size="isCollapsed ? 20 : 18" 
+                  />
+                </div>
+                
                 <span v-show="!isCollapsed" class="ml-2.5 text-xs font-medium truncate flex-1">{{
                   mod.name
                 }}</span>
-                <input
-                  v-show="!isCollapsed"
-                  type="checkbox"
-                  v-model="moduleStates[mod.id]"
-                  class="w-4 h-4 rounded-md border-slate-300 accent-indigo-600 cursor-pointer hover:ring-2 hover:ring-indigo-100 transition-all dark:border-slate-600 dark:bg-slate-800 dark:checked:bg-indigo-600"
-                />
+                
+                <!-- 复选框 -->
+                <div class="flex items-center" @click.stop>
+                  <input
+                    v-show="!isCollapsed"
+                    type="checkbox"
+                    v-model="moduleStates[mod.id]"
+                    class="w-4 h-4 rounded-md border-slate-300 accent-indigo-600 cursor-pointer hover:ring-2 hover:ring-indigo-100 transition-all dark:border-slate-600 dark:bg-slate-800 dark:checked:bg-indigo-600"
+                  />
+                </div>
               </div>
             </template>
           </draggable>
@@ -608,6 +630,19 @@ const handleClickOutside = (e: MouseEvent): void => {
   if (exportMenuRef.value && !exportMenuRef.value.contains(e.target as Node)) {
     isExportMenuOpen.value = false
   }
+}
+
+// 拖拽相关状态和事件
+const isDragging = ref(false)
+
+const onDragStart = () => {
+  isDragging.value = true
+  document.body.style.cursor = 'grabbing'
+}
+
+const onDragEnd = () => {
+  isDragging.value = false
+  document.body.style.cursor = ''
 }
 
 // 注册全局事件监听

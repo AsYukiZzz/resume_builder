@@ -62,7 +62,10 @@
               <span>{{ item.school || item.company || item.name }}</span>
               <span class="text-sm font-normal text-gray-600 font-mono">{{ item.date }}</span>
             </div>
-            <div class="text-gray-700 italic mb-1.5 font-medium flex items-center gap-2">
+            <div
+              class="text-gray-700 italic mb-1.5 font-medium flex items-center gap-2"
+              :style="{ fontSize: styleConfig.fontSize + 'px' }"
+            >
               <span>{{ item.major || item.role }}</span>
               <span v-if="item.degree" class="text-gray-400 text-xs">|</span>
               <span

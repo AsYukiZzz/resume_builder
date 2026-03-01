@@ -99,10 +99,11 @@
                <span v-if="item.degree">{{ item.degree }}</span>
             </div>
 
-            <!-- 列表描述渲染: 直接使用 v-html -->
+            <!-- 直接渲染 HTML -->
             <div
-              class="text-gray-600 text-sm prose-content"
-              :style="{ lineHeight: styleConfig.lineHeight, fontSize: styleConfig.fontSize + 'px' }"
+              v-if="item.desc"
+              class="text-gray-600 leading-relaxed prose-content"
+              :style="{ fontSize: styleConfig.fontSize + 'px', lineHeight: styleConfig.lineHeight }"
               v-html="item.desc"
             ></div>
           </div>
