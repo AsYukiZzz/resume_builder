@@ -177,9 +177,7 @@
 import {
   PhoneIcon,
   MailIcon,
-  MapPinIcon,
-  MessageSquareIcon,
-  GlobeIcon
+  MapPinIcon
 } from 'lucide-vue-next'
 
 /**
